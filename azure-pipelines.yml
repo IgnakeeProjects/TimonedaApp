@@ -1,0 +1,92 @@
+trigger:
+  branches:
+    include:
+      - dev
+      - main
+
+variables:
+  NODE_VERSION: '20.x'
+  BUILD_DIR: 'out'
+
+stages:
+  # =========================
+  # Stage de Desarrollo
+  # =========================
+  - stage: Deploy_Dev
+    displayName: "Despliegue a Development"
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+    variables:
+      - group: env.dev
+    jobs:
+      - job: BuildAndDeployDev
+        pool:
+          vmImage: 'ubuntu-latest'   # agente hospedado
+        steps:
+          - script: |
+              echo "🔍 Variables cargadas para DEVELOPMENT:"
+              printenv | grep -E '^NEXT_PUBLIC_' | cut -d= -f1 || echo "No hay variables NEXT_PUBLIC_ visibles"
+            displayName: "Verificar variables cargadas (sin valores)"
+            continueOnError: true
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '$(NODE_VERSION)'
+
+          - script: npm ci
+            displayName: 'Instalar dependencias'
+
+          - script: npm run build
+            displayName: 'Compilar Next.js'
+
+          - script: npm run export
+            displayName: 'Exportar sitio estático'
+
+          - task: AzureStaticWebApp@0
+            inputs:
+              app_location: '/'
+              output_location: '$(BUILD_DIR)'
+              skip_app_build: true
+              azure_static_web_apps_api_token: $(deployment_token_dev)
+
+  # =========================
+  # Stage de Producción
+  # =========================
+  - stage: Deploy_Prod
+    displayName: "Despliegue a Producción"
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    variables:
+      - group: env.prod
+    jobs:
+      - deployment: DeployProd
+        environment: "production"
+        pool:
+          vmImage: 'ubuntu-latest'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    echo "🔍 Variables cargadas para PRODUCTION:"
+                    printenv | grep -E '^NEXT_PUBLIC_' | cut -d= -f1 || echo "No hay variables NEXT_PUBLIC_ visibles"
+                  displayName: "Verificar variables cargadas (sin valores)"
+                  continueOnError: true
+
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: '$(NODE_VERSION)'
+
+                - script: npm ci
+                  displayName: 'Instalar dependencias'
+
+                - script: npm run build
+                  displayName: 'Compilar Next.js'
+
+                - script: npm run export
+                  displayName: 'Exportar sitio estático'
+
+                - task: AzureStaticWebApp@0
+                  inputs:
+                    app_location: '/'
+                    output_location: '$(BUILD_DIR)'
+                    skip_app_build: true
+                    azure_static_web_apps_api_token: $(deployment_token_prod)
