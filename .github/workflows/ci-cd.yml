@@ -12,31 +12,34 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
-    # Mapea ramas a entornos de GitHub
     environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
+        name: Instalar dependencias
 
-      - name: Build Next.js
-        run: npm run build && npm run export
-        # export genera la carpeta "out" con HTML estático
+      - run: npm run build && npm run export
+        name: Compilar Next.js
+
+      - name: Seleccionar token según rama
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "AZURE_TOKEN=${{ secrets.deployment_token_prod }}" >> $GITHUB_ENV
+          else
+            echo "AZURE_TOKEN=${{ secrets.deployment_token_dev }}" >> $GITHUB_ENV
+          fi
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ github.ref == 'refs/heads/main' && secrets.deployment_token_prod || secrets.deployment_token_dev }}
+          azure_static_web_apps_api_token: ${{ env.AZURE_TOKEN }}
           action: "upload"
           app_location: "/"
           output_location: "out"
