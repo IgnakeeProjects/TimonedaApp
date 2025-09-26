@@ -1,78 +1,100 @@
 import type { Metadata } from 'next';
 import { Merriweather, Open_Sans } from 'next/font/google';
+import Image from 'next/image';
+import Link from 'next/link';
 import './globals.css';
 
+// Configuración de fuentes
 const titleFont = Merriweather({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-title',
-  display: 'swap',
 });
 
 const bodyFont = Open_Sans({
   subsets: ['latin'],
   weight: ['400', '600'],
   variable: '--font-body',
-  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Iglesia Adventista del Séptimo Día - Timoneda',
-  description: 'Comunidad de fe, esperanza y servicio.',
+  title: 'Iglesia Adventista Timoneda, Valencia',
+  description: 'Fe en comunidad, Futuro con esperanza.',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="es" className={`${titleFont.variable} ${bodyFont.variable}`}>
-      <body>
-        <header className="header">
+      <body>        
+        {/* Cabecera principal */}
+        <header className="main-header">
           <div className="container">
-            <div className="logo-area">
-              {/* Inserta aquí el logotipo oficial */}
-              <img src="/assets/logo-adventista.svg" alt="Iglesia Adventista del Séptimo Día" />
-              <div>
-                <h1>Iglesia Adventista del Séptimo Día</h1>
-                <p className="subtitle">Esperanza, adoración y servicio</p>
-              </div>
-            </div>
-            <nav aria-label="Principal">
-              <ul className="nav">
-                <li><a href="/ministerios">Ministerios</a></li>
-                <li><a href="/eventos">Eventos</a></li>
-                <li><a href="/recursos">Recursos</a></li>
-                <li><a className="cta" href="/contacto">Visítanos</a></li>
-              </ul>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/adventist-es--denim.svg"
+                alt="Logo Iglesia Adventista"
+                width={40}
+                height={40}
+                className="logo"
+              />
+            </Link>
+            
+            <nav className="main-nav">
+              <Link href="/" className="active">Inicio</Link>
+              <Link href="/eventos">Eventos</Link>
+              <Link href="/ministerios">Ministerios</Link>
+              <Link href="/feligresia">Feligresia</Link>
+              <Link href="/sobre-nosotros">Sobre Nosotros</Link>
+              <Link href="/contacto">Contacto</Link>
             </nav>
+            
+            <div className="auth-links">
+              <Link href="/login">Login</Link>
+              <Link href="/registro">Registro</Link>
+              <button className="md:hidden" title="Abrir menú" aria-label="Abrir menú">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </button>
+            </div>
           </div>
         </header>
+        
+        {/* Contenido principal */}
+        <main>{children}</main>
 
-        <main>
-          <section className="hero">
-            <h2>“A la ley y al testimonio”</h2>
-            <p>Un lugar para crecer en fe, compartir esperanza y servir a la comunidad.</p>
-            <a className="cta" href="/plan-de-fe">Conoce nuestro plan de fe</a>
-          </section>
-          <div className="container">{children}</div>
-        </main>
-
-        <footer className="footer">
-          <div className="container footer-content">
-            <div>
-              <h3>Contacto</h3>
-              <p>Dirección, horarios de culto y medios de comunicación.</p>
+        {/* Footer */}
+        <footer className="main-footer">
+          <div className="container">
+            <div className="flex items-center">
+              <Image
+                src="/logo-adventista-white.png"
+                alt="Seventh-day Adventist Church"
+                width={48}
+                height={48}
+                className="footer-logo mr-4"
+              />
+              <span>Seventh-day Adventist Church</span>
             </div>
-            <div>
-              <h3>Síguenos</h3>
-              <ul className="footer-links">
-                <li><a href="https://www.facebook.com/">Facebook</a></li>
-                <li><a href="https://www.youtube.com/">YouTube</a></li>
-              </ul>
-            </div>
-            <div className="footer-symbol">
-              <img src="/assets/icono-llama-biblia.svg" alt="Símbolo Adventista" />
+            <div className="social-icons">
+              <a href="#" aria-label="Facebook">
+                <Image src="/icons/facebook.svg" alt="Facebook" width={24} height={24} />
+              </a>
+              <a href="#" aria-label="Instagram">
+                <Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} />
+              </a>
+              <a href="#" aria-label="Twitter">
+                <Image src="/icons/twitter.svg" alt="Twitter" width={24} height={24} />
+              </a>
+              <div className="text-right text-sm">
+                <a href="#" className="hover:underline">Aviso Legal</a>
+              </div>
             </div>
           </div>
-          <p className="footer-note">© {new Date().getFullYear()} Iglesia Adventista del Séptimo Día - Timoneda.</p>
         </footer>
       </body>
     </html>
