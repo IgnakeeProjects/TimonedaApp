@@ -3,97 +3,162 @@
 @tailwind utilities;
 
 :root {
-  /* Paleta de colores basada en la imagen */
-  --color-primary: #003366; /* Azul oscuro del footer */
-  --color-accent: #457b9d;  /* Azul/verde medio de la barra superior y fondo */
-  --color-secondary: #e76f51; /* Naranja/Dorado para botones CTA */
-  --color-surface: #ffffff; /* Blanco para cabecera y tarjetas */
-  --color-background: #f1faee; /* Un fondo muy claro, casi blanco */
-  --color-text-dark: #264653; /* Texto principal oscuro */
-  --color-text-light: #ffffff; /* Texto sobre fondos oscuros */
-
+  /* Paleta oficial Iglesia Adventista */
+  --color-primary: #003366;     /* Azul Marino - principal */
+  --color-secondary: #FFCC00;   /* Dorado - acentos */
+  --color-accent: #006633;      /* Verde Oscuro - natural */
+  --color-surface: #FFFFFF;     /* Blanco - pureza */
+  --color-background: #F0F0F0;  /* Gris Claro - fondos */
+  --color-text-dark: #003366;   /* Texto principal */
+  --color-text-light: #FFFFFF; /* Texto sobre fondos oscuros */
+  
   /* Tipografía */
   --font-title: 'Merriweather', serif;
   --font-body: 'Open Sans', sans-serif;
 }
 
-body {
-  background-color: var(--color-background);
-  color: var(--color-text-dark);
-  font-family: var(--font-body);
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-dark);
+    font-family: var(--font-body);
+  }
 }
 
-/* Componentes reutilizables */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+@layer components {
+  /* Container personalizado */
+  .container {
+    @apply w-full max-w-7xl mx-auto px-6;
+  }
+
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    @apply hover:scale-105 focus:ring-yellow-400;
+  }
+
+  .btn-secondary {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    @apply hover:opacity-90 focus:ring-blue-500;
+  }
+
+  /* Layout principal */
+  .top-bar {
+    background-color: var(--color-accent);
+    @apply py-2 text-center text-sm;
+    color: var(--color-text-light);
+  }
+
+  .main-header {
+    background-color: var(--color-surface);
+    @apply sticky top-0 z-50 border-b border-gray-200 shadow-sm;
+  }
+
+  .main-header .container {
+    @apply flex items-center justify-between h-20;
+  }
+
+  .main-header .logo {
+    @apply h-12 w-auto;
+  }
+
+  /* Navegación */
+  .main-nav {
+    @apply hidden md:flex space-x-1;
+  }
+
+  .main-nav a {
+    @apply px-4 py-2 text-gray-700 hover:text-blue-900 rounded-md transition-colors duration-200 text-base font-medium;
+  }
+
+  .main-nav a.active {
+    color: var(--color-primary);
+    @apply bg-blue-50;
+  }
+
+  /* Enlaces de autenticación */
+  .auth-links {
+    @apply hidden md:flex items-center space-x-4;
+  }
+
+  .auth-links a {
+    @apply text-gray-600 hover:text-blue-900 font-medium;
+  }
+
+  /* Footer */
+  .main-footer {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    @apply py-8 mt-16;
+  }
+
+  .main-footer .container {
+    @apply flex flex-col md:flex-row items-center justify-between text-center md:text-left;
+  }
+
+  .footer-logo {
+    @apply h-16 w-auto mb-4 md:mb-0;
+  }
+
+  .social-icons {
+    @apply flex space-x-4 mt-4 md:mt-0;
+  }
+
+  .social-icons a {
+    @apply hover:opacity-75 transition-opacity duration-200;
+  }
+
+  /* Utilidades adicionales */
+  .text-title {
+    font-family: var(--font-title);
+    @apply font-bold text-gray-900;
+  }
+
+  .text-body {
+    font-family: var(--font-body);
+  }
+
+  /* Secciones de contenido */
+  .section {
+    @apply py-16;
+  }
+
+  .section-bg-white {
+    background-color: var(--color-surface);
+  }
+
+  .section-bg-light {
+    background-color: var(--color-background);
+  }
+
+  /* Tarjetas */
+  .card {
+    background-color: var(--color-surface);
+    @apply rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300;
+  }
 }
 
-.btn {
-  @apply inline-block rounded-md px-6 py-2 font-semibold transition-transform duration-200 hover:scale-105;
-}
-
-.btn-primary {
-  background-color: var(--color-secondary);
-  color: var(--color-text-light);
-}
-
-/* Estilos del Layout */
-.top-bar {
-  background-color: var(--color-accent);
-  padding: 0.5rem 0;
-  color: var(--color-text-light);
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.main-header {
-  background-color: var(--color-surface);
-  border-bottom: 1px solid #e5e7eb;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.main-header .container {
-  @apply flex items-center justify-between h-20;
-}
-
-.main-header .logo {
-  @apply h-10 w-auto;
-}
-
-.main-nav a {
-  @apply text-gray-600 hover:text-blue-800 px-4 py-2 text-lg;
-}
-
-.main-nav a.active {
-  color: var(--color-primary);
-  border-bottom: 2px solid var(--color-primary);
-}
-
-.auth-links a {
-  @apply text-gray-600 hover:text-blue-800 ml-4;
-}
-
-.main-footer {
-  background-color: var(--color-primary);
-  color: var(--color-text-light);
-  padding: 2rem 0;
-}
-
-.main-footer .container {
-  @apply flex flex-col md:flex-row items-center justify-between text-center md:text-left;
-}
-
-.footer-logo {
-  @apply h-12 w-auto mb-4 md:mb-0;
-}
-
-.social-icons a {
-  @apply inline-block mx-2;
+@layer utilities {
+  /* Utilidades personalizadas */
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  
+  .text-primary {
+    color: var(--color-primary);
+  }
+  
+  .text-secondary {
+    color: var(--color-secondary);
+  }
 }
