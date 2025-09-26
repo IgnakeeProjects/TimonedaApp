@@ -22,7 +22,6 @@ export const metadata: Metadata = {
   description: 'Fe en comunidad, Futuro con esperanza.',
 };
 
-// Componente de Layout principal
 export default function RootLayout({
   children,
 }: {
@@ -30,65 +29,70 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${titleFont.variable} ${bodyFont.variable}`}>
-      <body>
-        {/* Barra superior de anuncios */}
-        <div className="top-bar">
-          <p>Bienvenidos a nuestra comunidad de fe. ¡Te esperamos!</p>
-        </div>
-
+      <body>        
         {/* Cabecera principal */}
         <header className="main-header">
           <div className="container">
-            <Link href="/">
+            <Link href="/" className="flex items-center">
               <Image
-                src="/logo-adventista.svg" // Asegúrate que esta ruta es correcta
+                src="/adventist-es--denim.svg"
                 alt="Logo Iglesia Adventista"
-                width={50}
+                width={40}
                 height={40}
                 className="logo"
               />
             </Link>
-            <nav className="main-nav hidden md:flex">
+            
+            <nav className="main-nav">
               <Link href="/" className="active">Inicio</Link>
               <Link href="/eventos">Eventos</Link>
               <Link href="/ministerios">Ministerios</Link>
+              <Link href="/feligresia">Feligresia</Link>
               <Link href="/sobre-nosotros">Sobre Nosotros</Link>
               <Link href="/contacto">Contacto</Link>
             </nav>
-            <div className="auth-links hidden md:flex items-center">
+            
+            <div className="auth-links">
               <Link href="/login">Login</Link>
               <Link href="/registro">Registro</Link>
+              <button className="md:hidden" title="Abrir menú" aria-label="Abrir menú">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </button>
             </div>
-            {/* Icono de menú para móviles */}
-            <button className="md:hidden" title="Abrir menú" aria-label="Abrir menú">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            </button>
           </div>
         </header>
-
-        {/* Contenido principal de la página */}
+        
+        {/* Contenido principal */}
         <main>{children}</main>
 
-        {/* Pie de página */}
+        {/* Footer */}
         <footer className="main-footer">
           <div className="container">
             <div className="flex items-center">
               <Image
-                src="/logo-adventista-blanco.svg" // Versión blanca del logo
-                alt="Logo Iglesia Adventista"
-                width={60}
-                height={50}
+                src="/logo-adventista-white.png"
+                alt="Seventh-day Adventist Church"
+                width={48}
+                height={48}
                 className="footer-logo mr-4"
               />
-              <span>© {new Date().getFullYear()} Seventh-day Adventist Church</span>
+              <span>Seventh-day Adventist Church</span>
             </div>
-            <div className="social-icons mt-4 md:mt-0">
-              {/* Reemplaza con tus enlaces reales */}
-              <a href="#" aria-label="Facebook"><Image src="/icons/facebook.svg" alt="Facebook" width={24} height={24} /></a>
-              <a href="#" aria-label="Instagram"><Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} /></a>
-              <a href="#" aria-label="Twitter"><Image src="/icons/twitter.svg" alt="Twitter" width={24} height={24} /></a>
+            <div className="social-icons">
+              <a href="#" aria-label="Facebook">
+                <Image src="/icons/facebook.svg" alt="Facebook" width={24} height={24} />
+              </a>
+              <a href="#" aria-label="Instagram">
+                <Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} />
+              </a>
+              <a href="#" aria-label="Twitter">
+                <Image src="/icons/twitter.svg" alt="Twitter" width={24} height={24} />
+              </a>
+              <div className="text-right text-sm">
+                <a href="#" className="hover:underline">Aviso Legal</a>
+              </div>
             </div>
           </div>
         </footer>
