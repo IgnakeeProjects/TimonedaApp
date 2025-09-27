@@ -3,6 +3,7 @@ import { Merriweather, Open_Sans } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import './globals.css';
+import Header from './components/Header/Header';
 
 // Configuración de fuentes
 const titleFont = Merriweather({
@@ -31,38 +32,7 @@ export default function RootLayout({
     <html lang="es" className={`${titleFont.variable} ${bodyFont.variable}`}>
       <body>        
         {/* Cabecera principal */}
-        <header className="main-header">
-          <div className="container">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/adventist-es--denim.svg"
-                alt="Logo Iglesia Adventista"
-                width={40}
-                height={40}
-                className="logo"
-              />
-            </Link>
-            
-            <nav className="main-nav">
-              <Link href="/" className="active">Inicio</Link>
-              <Link href="/eventos">Eventos</Link>
-              <Link href="/ministerios">Ministerios</Link>
-              <Link href="/feligresia">Feligresia</Link>
-              <Link href="/sobre-nosotros">Sobre Nosotros</Link>
-              <Link href="/contacto">Contacto</Link>
-            </nav>
-            
-            <div className="auth-links">
-              <Link href="/login">Login</Link>
-              <Link href="/registro">Registro</Link>
-              <button className="md:hidden" title="Abrir menú" aria-label="Abrir menú">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </header>
+        <Header />
         
         {/* Contenido principal */}
         <main>{children}</main>

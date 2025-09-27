@@ -27,7 +27,7 @@
 
   .top-bar { @apply text-center text-sm py-1; background-color: #006633; color: var(--color-text-light); }
 
-  .main-header { @apply sticky top-0 z-50 shadow-sm; background-color: var(--color-surface); }
+  .main-header {@apply sticky top-0 z-50 bg-white border-b border-gray-200;}
   .main-header .container { @apply flex items-center justify-between h-16; }
   .logo { @apply h-10 w-auto; }
   .main-nav { @apply hidden md:flex gap-6; }
@@ -63,6 +63,26 @@
   /* Secciones (para cuando agregues contenido) */
   .events-section { background-color: #5a9fb8; @apply py-12; color: var(--color-text-light); }
   .sermons-section { background-color: var(--color-surface); @apply py-12; }
+
+  .main-header .container { @apply flex items-center justify-between h-16 gap-4; }
+
+  .main-nav { @apply hidden md:flex gap-6; }
+
+  /* Antes: .auth-links { @apply hidden md:flex items-center gap-4; } */
+  .auth-links { @apply hidden md:flex items-center gap-4; }
+
+  /* Estilo del botón hamburguesa */
+  .menu-btn {@apply inline-flex items-center justify-center p-2 rounded text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500; }
+
+  /* Banderas (desktop) */
+  .flag-list { @apply hidden md:flex items-center gap-2; }
+  .flag { @apply h-4 w-auto rounded-sm ring-1 ring-gray-300; }
+  .flag-list a { @apply inline-flex items-center; }
+  .flag-list a:hover .flag { @apply ring-blue-400; }
+
+  /* Menú móvil */
+  .mobile-nav { @apply absolute left-0 right-0 top-16 z-40 bg-white shadow-lg border-t border-gray-200; }
+  .mobile-nav a { @apply text-gray-700 hover:text-blue-900; }
 }
 
 @layer utilities {
