@@ -1,13 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  images: {
-    unoptimized: true
-  },
-  trailingSlash: true,
-  
+  // No necesitas 'output', 'images.unoptimized' ni nada especial
+  // Vercel lo maneja todo automáticamente
 };
 
-module.exports = nextConfig;
-
+export default nextConfig;
