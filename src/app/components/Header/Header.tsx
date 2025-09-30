@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { supabase } from '../../lib/supabaseClient';
+import { getBrowserSupabase } from '../../lib/supabaseClient';
 
 const navItems = [
   { href: '/', label: 'Inicio' },
@@ -19,22 +19,37 @@ export default function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [notifCount, setNotifCount] = useState<number>(0); // placeholder
 
+  // Crear el cliente solo en el navegador y solo si hay envs
+  const supabase = useMemo(() => getBrowserSupabase(), []);
+
   useEffect(() => {
+    if (!supabase) {
+      // Sin configuración de Supabase no intentamos autenticar
+      setLoggedIn(false);
+      setNotifCount(0);
+      return;
+    }
+
+    let active = true;
+
     // Estado inicial
     supabase.auth.getSession().then(({ data }) => {
-      setLoggedIn(Boolean(data.session));
-      // TODO: carga de notificaciones reales
+      if (!active) return;
+      setLoggedIn(Boolean(data?.session));
       setNotifCount(3); // demo
     });
 
     // Suscripción a cambios
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       setLoggedIn(Boolean(session));
       if (!session) setNotifCount(0);
     });
 
-    return () => sub.subscription.unsubscribe();
-  }, []);
+    return () => {
+      active = false;
+      subscription?.unsubscribe();
+    };
+  }, [supabase]);
 
   const close = () => setOpen(false);
 
