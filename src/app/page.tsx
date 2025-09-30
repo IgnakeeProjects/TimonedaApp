@@ -4,15 +4,25 @@ import type { EventCardProps } from './components/EventCard/EventCard';
 import './globals.css';
 import { fetchFacebookEvents, fetchInstagramAsEvents } from './lib/social';
 
+type ApiEvent = {
+  id: string;
+  platform: 'facebook' | 'instagram';
+  message: string;
+  imageSrc: string;
+  href: string;
+  venue?: string | null;
+  publishedTime?: string | null;
+};
+
 export const dynamic = 'force-dynamic';
 
 async function getEvents(): Promise<EventCardProps[]> {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const res = await fetch(`${base}/api/events`, { cache: 'no-store' });
   if (!res.ok) return [];
-  const { events } = await res.json();
+  const { events } = await res.json() as { events: ApiEvent[] };
 
-  const mapped: EventCardProps[] = (events || []).map((e: any) => ({
+  const mapped: EventCardProps[] = (events || []).map((e: ApiEvent) => ({
     id: e.id,
     message: e.message,
     imageSrc: e.imageSrc,

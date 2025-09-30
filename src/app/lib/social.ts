@@ -13,6 +13,45 @@ export type NormalizedEvent = {
   publishedTime?: string | null;  
 };
 
+/* ===== Tipos de Facebook ===== */
+type FBImage = { height: number; width: number; src: string };
+type FBMedia = { source: string;image?: FBImage };
+type FBAttachment = { description:string; media?: FBMedia; type?: string; title?: string; url?: string };
+type FBPost = {
+  id: string;
+  created_time: string;
+  message?: string;
+  permalink_url?: string;
+  status_type?: string;
+  full_picture?: string;
+  attachments?: { data: FBAttachment[] };
+  likes?: { summary: { total_count: number } };
+  comments?: { summary: { total_count: number } };
+  shares?: { count: number };
+};
+type FBPostsResponse = { data?: FBPost[] };
+
+/* ===== Tipos de Instagram ===== */
+type IGChild = {
+  id: string;
+  media_type: 'IMAGE' | 'VIDEO';
+  media_url?: string;
+  thumbnail_url?: string;
+};
+type IGMedia = {
+  id: string;
+  media_type: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+  caption?: string;
+  permalink: string;
+  timestamp?: string;
+  username?: string;
+  media_url?: string;
+  thumbnail_url?: string;
+  like_count?: number;
+  comments_count?: number;
+  children?: { data: IGChild[] };
+};
+type IGMediaResponse = { data?: IGMedia[] };
 
 function fmStr(str?: string) {
     if(!str) return '';
@@ -21,11 +60,11 @@ function fmStr(str?: string) {
 
 export async function fetchFacebookEvents(limit = 8): Promise<NormalizedEvent[]> {
 
-  if (USE_SOCIAL_MOCK) return normalizeFacebookPosts(FB_POSTS_MOCK.data);
+  if (USE_SOCIAL_MOCK) return normalizeFacebookPosts(FB_POSTS_MOCK.data ?? []);
 
   const pageId = process.env.FACEBOOK_PAGE_ID;
   const token = process.env.FACEBOOK_ACCESS_TOKEN;
-  if (!pageId || !token) return normalizeFacebookPosts(FB_POSTS_MOCK.data);
+  if (!pageId || !token) return normalizeFacebookPosts(FB_POSTS_MOCK.data ?? []);
 
   const url =
     `${GRAPH}/${pageId}/posts` +
@@ -36,11 +75,11 @@ export async function fetchFacebookEvents(limit = 8): Promise<NormalizedEvent[]>
 
   try {
     const res = await fetch(url, { next: { revalidate: 300 } });
-    if (!res.ok) return normalizeFacebookPosts(FB_POSTS_MOCK.data);
-    const json = await res.json();
+    if (!res.ok) return normalizeFacebookPosts(FB_POSTS_MOCK.data ?? []);
+    const json = await res.json() as FBPostsResponse;
     return normalizeFacebookPosts(json?.data ?? []);
   } catch {
-    return normalizeFacebookPosts(FB_POSTS_MOCK.data);
+    return normalizeFacebookPosts(FB_POSTS_MOCK.data ?? []);
   }
 }
 
@@ -50,7 +89,7 @@ export async function fetchInstagramAsEvents(limit = 12): Promise<NormalizedEven
   
   // Usa el mock si está activado o aún no tienes credenciales
   if (USE_SOCIAL_MOCK || !igUserId || !token) {
-    return normalizeInstagramPosts(IG_POSTS_MOCK.data);
+    return normalizeInstagramPosts(IG_POSTS_MOCK.data ?? []);
     console.log(IG_POSTS_MOCK.data);
   }
 
@@ -68,16 +107,16 @@ export async function fetchInstagramAsEvents(limit = 12): Promise<NormalizedEven
 
   try {
     const res = await fetch(url, { next: { revalidate: 300 } });
-    if (!res.ok) return normalizeInstagramPosts(IG_POSTS_MOCK.data);
-    const json = await res.json();
+    if (!res.ok) return normalizeInstagramPosts(IG_POSTS_MOCK.data ?? []);
+    const json = await res.json() as IGMediaResponse;
     return normalizeInstagramPosts(json?.data ?? []);
   } catch {
-    return normalizeInstagramPosts(IG_POSTS_MOCK.data);
+    return normalizeInstagramPosts(IG_POSTS_MOCK.data ?? []);
   }
 }
 
-function normalizeFacebookPosts(items: readonly any[]): NormalizedEvent[] {
-  return (items || []).map((p: any) => {
+function normalizeFacebookPosts(items: ReadonlyArray<FBPost>): NormalizedEvent[] {
+  return (items || []).map((p: FBPost) => {
     const firstAttachmentImage = p?.attachments?.data?.[0]?.media?.image?.src ?? p.full_picture ?? '/events/placeholder-pin-svgrepo-com.svg';
     const title = (p.message ?? p?.attachments?.data?.[0]?.title ?? 'Publicación').split('\n')[0];
     return {
@@ -93,8 +132,8 @@ function normalizeFacebookPosts(items: readonly any[]): NormalizedEvent[] {
 }
 
 
-function normalizeInstagramPosts(items: readonly any[]): NormalizedEvent[] {
-  return (items || []).map((p: any) => {
+function normalizeInstagramPosts(items: ReadonlyArray<IGMedia>): NormalizedEvent[] {
+  return (items || []).map((p: IGMedia) => {
     // Elegir imagen de preview según tipo
     let img = '';
     if (p.media_type === 'CAROUSEL_ALBUM') {
@@ -104,9 +143,9 @@ function normalizeInstagramPosts(items: readonly any[]): NormalizedEvent[] {
         (child?.media_type === 'VIDEO' && (child.thumbnail_url || child.media_url)) ||
         '';
     } else if (p.media_type === 'VIDEO') {
-      img = p.thumbnail_url || p.media_url;
+      img = p.thumbnail_url || p.media_url || '';
     } else if (p.media_type === 'IMAGE') {
-      img = p.media_url;
+      img = p.media_url ?? '';
     }
     if (!img) img = '/events/placeholder-pin-svgrepo-com.svg';
 
@@ -126,7 +165,7 @@ function normalizeInstagramPosts(items: readonly any[]): NormalizedEvent[] {
 
 
 /* ================== MOCK: Facebook posts ================== */
-const FB_POSTS_MOCK = {
+const FB_POSTS_MOCK : FBPostsResponse = {
   data: [
     {
       id: '10150199999888877_87654321098765432',
@@ -139,14 +178,19 @@ const FB_POSTS_MOCK = {
       attachments: {
         data: [
           {
+            description:
+              '¡Fin de semana de lanzamiento! Nuestro nuevo producto ya está disponible. Visita nuestro sitio web para saber más.',            
             media: {
+              source: 'https://video.example.com/...mp4',
               image: {
                 height: 720,
                 src: '/events/mock-fb-1.jpg',
                 width: 960,
               },
             },
+            title: 'Lanzamiento de Nuestro Nuevo Producto',
             type: 'photo',
+            url: 'https://video.example.com/...mp4',
           },
         ],
       },
@@ -166,6 +210,10 @@ const FB_POSTS_MOCK = {
           {
             description:
               'Un análisis profundo de las tendencias que darán forma a nuestro mundo durante la próxima década.',
+            media: {
+              source: 'https://www.techjournal.com/articles/future-of-ai',
+              image: { height: 630, width: 1200, src: '/events/mock-fb-3.jpg' },
+            },
             title: 'El Futuro de la Inteligencia Artificial: Más Allá de 2024',
             type: 'share',
             url: 'https://www.techjournal.com/articles/future-of-ai',
@@ -193,7 +241,9 @@ const FB_POSTS_MOCK = {
               source: 'https://video.example.com/...mp4',
               image: { height: 1080, src: '/events/mock-fb-2.jpg', width: 1920 },
             },
+            title: 'Detrás de Cámaras: Nuestro Equipo en Acción',
             type: 'video_inline',
+            url: 'https://video.example.com/...mp4',
           },
         ],
       },
@@ -202,11 +252,11 @@ const FB_POSTS_MOCK = {
       shares: { count: 76 },
     },
   ],
-} as const;
+};
 
 
 // ===== MOCK: Instagram (tus 3 últimos posts) =====
-const IG_POSTS_MOCK = {
+const IG_POSTS_MOCK: IGMediaResponse = {
   data: [
     {
       id: '17918991234567890',
@@ -250,4 +300,4 @@ const IG_POSTS_MOCK = {
       comments_count: 98
     }
   ]
-} as const;
+};
