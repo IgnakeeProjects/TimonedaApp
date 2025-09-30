@@ -2,7 +2,7 @@ import HeroSlider from './components/HeroSlider/HeroSlider';
 import EventSlider from './components/EventSlider/EventSlider';
 import type { EventCardProps } from './components/EventCard/EventCard';
 import './globals.css';
-import { fetchFacebookEvents, fetchInstagramAsEvents } from './lib/social';
+
 
 type ApiEvent = {
   id: string;

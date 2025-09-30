@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import type { SupabaseFile } from "../../../types/SupabaseFile";
+import Image from "next/image";
 
 
 export default function ListFiles() {
@@ -19,7 +20,7 @@ export default function ListFiles() {
   return (
     <div>
       {files.map((file) => (
-        <img
+        <Image
           key={file.name}
           src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/media/uploads/${file.name}`}
           alt={file.name}

@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import { Merriweather, Open_Sans } from 'next/font/google';
-import Image from 'next/image';
-import Link from 'next/link';
 import './globals.css';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
