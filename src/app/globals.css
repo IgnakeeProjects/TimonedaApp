@@ -193,6 +193,17 @@
   .footer-dev { @apply flex justify-center mt-1; }
   .footer-dev-link { @apply inline-flex items-center gap-2 text-[11px] text-gray-600 hover:text-blue-900; }
   .footer-dev-logo { @apply h-4 w-auto opacity-100; }
+
+  /* Reubicar icono de plataforma en la esquina superior derecha */
+  .platform-chip {
+    @apply absolute top-3 right-3 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white shadow
+           border border-gray-200;
+  }
+  .platform-chip svg { width: 18px; height: 18px; display: block; }
+
+  /* (Opcional) si aún existe el chip de plataforma en la izquierda, ocúltalo
+     o elimínalo del JSX donde se renderice. */
+  /* .platform-chip-left { display: none; } */
 }
 
 @layer utilities {
