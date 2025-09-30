@@ -15,7 +15,7 @@ import { fetchFacebookEvents, fetchInstagramAsEvents } from './lib/social';
 //   publishedTime?: string | null;
 // };
 
-export const revalidate = 300; // ISR: 5 min
+export const revalidate = 60; // ISR: 1 min
 
 async function getEvents(): Promise<EventCardProps[]> {
   const [fb, ig] = await Promise.all([fetchFacebookEvents(), fetchInstagramAsEvents(20)]);
