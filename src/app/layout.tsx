@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${titleFont.variable} ${bodyFont.variable}`}>
-      <body>        
+      <body suppressHydrationWarning>        
         {/* Cabecera principal */}
         <Header />
         
