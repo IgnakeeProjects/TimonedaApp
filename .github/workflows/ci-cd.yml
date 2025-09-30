@@ -6,6 +6,9 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Mapea ramas a entornos de GitHub
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
