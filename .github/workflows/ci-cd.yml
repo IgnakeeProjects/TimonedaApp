@@ -30,6 +30,10 @@ jobs:
         run: npm ci
 
       - name: Build Next.js (static export)
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          USE_SOCIAL_MOCK: 'true'
         run: npm run build
         # ⚠️ Asegúrate de tener en next.config.js:
         # module.exports = { output: 'export' }

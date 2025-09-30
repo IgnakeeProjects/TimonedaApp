@@ -2,6 +2,7 @@ import HeroSlider from './components/HeroSlider/HeroSlider';
 import EventSlider from './components/EventSlider/EventSlider';
 import type { EventCardProps } from './components/EventCard/EventCard';
 import './globals.css';
+import { fetchFacebookEvents, fetchInstagramAsEvents } from './lib/social';
 
 
 type ApiEvent = {
@@ -14,15 +15,14 @@ type ApiEvent = {
   publishedTime?: string | null;
 };
 
-export const dynamic = 'force-dynamic';
+//export const dynamic = 'force-dynamic';
 
 async function getEvents(): Promise<EventCardProps[]> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  const res = await fetch(`${base}/api/events`, { cache: 'no-store' });
-  if (!res.ok) return [];
-  const { events } = await res.json() as { events: ApiEvent[] };
-
-  const mapped: EventCardProps[] = (events || []).map((e: ApiEvent) => ({
+  const [fb, ig] = await Promise.all([fetchFacebookEvents(), fetchInstagramAsEvents(20)]);
+  const merged = [...fb, ...ig].sort(
+    (a, b) => new Date(b.publishedTime || 0).getTime() - new Date(a.publishedTime || 0).getTime()
+  );
+  return merged.map((e) => ({
     id: e.id,
     message: e.message,
     imageSrc: e.imageSrc,
@@ -31,8 +31,9 @@ async function getEvents(): Promise<EventCardProps[]> {
     venue: e.venue ?? null,
     publishedTime: e.publishedTime ?? null,
   }));
-  return mapped;
 }
+
+
 export default async function Home() {
   // Fuente temporal; después mapea aquí datos del Graph API de Facebook/Instagram.
   const events= await getEvents();  
