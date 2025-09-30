@@ -12,6 +12,28 @@ export type EventCardProps = {
   publishedTime?: string | null;
 };
 
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="12" height="12">
+      <path fill="#1877F2" d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.093 10.125 24v-8.437H7.078V12.07h3.047V9.412c0-3.008 1.792-4.667 4.533-4.667 1.313 0 2.686.235 2.686.235v2.953h-1.514c-1.492 0-1.956.93-1.956 1.885v2.252h3.328l-.532 3.492h-2.796V24C19.612 23.093 24 18.1 24 12.073z"/>
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18">
+      <radialGradient id="igGrad" cx="50%" cy="50%" r="75%">
+        <stop offset="0%" stopColor="#feda75"/><stop offset="50%" stopColor="#d62976"/><stop offset="100%" stopColor="#4f5bd5"/>
+      </radialGradient>
+      <path fill="url(#igGrad)" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z"/>
+      <path fill="#fff" d="M12 7.5A4.5 4.5 0 1 0 12 16.5 4.5 4.5 0 1 0 12 7.5zm0-1.5a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm6.8-.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/>
+    </svg>
+  );
+}
+
+type Props = EventCardProps & { /* ... */ };
+
 export default function EventCard({
   imageSrc,  
   href = '#',
@@ -25,32 +47,17 @@ export default function EventCard({
   const Media = (
     <div className="event-media">
       <Image src={imageSrc} alt='' fill className="object-cover" sizes="(min-width: 1024px) 25vw, 50vw" />
-      <div className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-white/90 border border-gray-200 text-gray-700">
-        {source === 'facebook' ? 'Facebook' : 'Instagram'}
-      </div>
-
-      <div className="absolute top-3 left-3 px-2 py-1 rounded-full bg-white/90 border border-gray-200">
-      <Image
-        src={source === 'facebook' ? '/icons/facebook.svg' : '/icons/instagram.svg'}
-        alt=''
-        width={16}
-        height={16}
-        className="inline-block"
-      />
-    </div>
-
-
-      <button className="wishlist-btn" type="button" aria-label="Guardar evento">
-        <svg width="18" height="18" viewBox="0 0 24 24" className="text-gray-700" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-        </svg>
-      </button>
+      <span className="platform-chip" aria-label={source}>
+        {source === 'facebook' ? <FacebookIcon /> : <InstagramIcon />}
+      </span>
+      
     </div>
   );
 
   return (
     <article className="event-card">
       {clickable ? <Link href={href} className="block">{Media}</Link> : <div className="block">{Media}</div>}
+            
 
       <div className="event-body">
         {venue && (

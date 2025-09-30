@@ -174,7 +174,7 @@ const FB_POSTS_MOCK : FBPostsResponse = {
         '¡Fin de semana de lanzamiento! Nuestro nuevo producto ya está disponible. ✨ Visita nuestro sitio web para saber más. #Lanzamiento #NuevoProducto #Innovacion',
       permalink_url: 'https://www.facebook.com/10150199999888877/posts/87654321098765432',
       status_type: 'added_photos',
-      full_picture: '/events/mock-fb-1.jpg',
+      full_picture: 'Mock-1.jpg',
       attachments: {
         data: [
           {
@@ -184,7 +184,7 @@ const FB_POSTS_MOCK : FBPostsResponse = {
               source: 'https://video.example.com/...mp4',
               image: {
                 height: 720,
-                src: '/events/mock-fb-1.jpg',
+                src: '/ImgMock-1.jpg',
                 width: 960,
               },
             },
@@ -212,7 +212,7 @@ const FB_POSTS_MOCK : FBPostsResponse = {
               'Un análisis profundo de las tendencias que darán forma a nuestro mundo durante la próxima década.',
             media: {
               source: 'https://www.techjournal.com/articles/future-of-ai',
-              image: { height: 630, width: 1200, src: '/events/mock-fb-3.jpg' },
+              image: { height: 630, width: 1200, src: 'ImgMock-4.jpg' },
             },
             title: 'El Futuro de la Inteligencia Artificial: Más Allá de 2024',
             type: 'share',
@@ -239,7 +239,7 @@ const FB_POSTS_MOCK : FBPostsResponse = {
               'Un vistazo detrás de cámaras de nuestro equipo trabajando en el nuevo proyecto.',
             media: {
               source: 'https://video.example.com/...mp4',
-              image: { height: 1080, src: '/events/mock-fb-2.jpg', width: 1920 },
+              image: { height: 1080, src: 'ImgMock-5.jpg', width: 1920 },
             },
             title: 'Detrás de Cámaras: Nuestro Equipo en Acción',
             type: 'video_inline',
@@ -270,7 +270,7 @@ const IG_POSTS_MOCK: IGMediaResponse = {
       comments_count: 152,
       children: {
         data: [
-          { id: '17918991234567891', media_type: 'IMAGE', media_url: 'https://scontent.cdninstagram.com/v/t51.2885-15/393717462_..._n.jpg?...' },
+          { id: '17918991234567891', media_type: 'IMAGE', media_url: 'ImgMock-2.jpg' },
           { id: '17918991234567892', media_type: 'VIDEO', media_url: 'https://scontent.cdninstagram.com/v/t50.2886-16/393717463_..._n.mp4?...', thumbnail_url: 'https://scontent.cdninstagram.com/v/t51.2885-15/393717464_..._n.jpg?...' },
           { id: '17918991234567893', media_type: 'IMAGE', media_url: 'https://scontent.cdninstagram.com/v/t51.2885-15/393717465_..._n.jpg?...' }
         ]
@@ -283,8 +283,8 @@ const IG_POSTS_MOCK: IGMediaResponse = {
       permalink: 'https://www.instagram.com/reel/Cy9ZYXWV456/',
       timestamp: '2023-10-26T15:05:42+0000',
       username: 'explorador_digital',
-      media_url: 'https://scontent.cdninstagram.com/v/t50.2886-16/393717450_..._n.mp4?...',
-      thumbnail_url: 'https://scontent.cdninstagram.com/v/t51.2885-15/393717451_..._n.jpg?...',
+      media_url: 'ImgMock-3.jpg',
+      thumbnail_url: 'ImgMock-3.jpg',
       like_count: 5820,
       comments_count: 210
     },
@@ -295,7 +295,7 @@ const IG_POSTS_MOCK: IGMediaResponse = {
       permalink: 'https://www.instagram.com/p/Cy7GHIJK789/',
       timestamp: '2023-10-25T21:20:03+0000',
       username: 'explorador_digital',
-      media_url: 'https://scontent.cdninstagram.com/v/t51.2885-15/393717440_..._n.jpg?...',
+      media_url: 'ImgMock-6.jpg',
       like_count: 1988,
       comments_count: 98
     }
