@@ -5,17 +5,17 @@ import './globals.css';
 import { fetchFacebookEvents, fetchInstagramAsEvents } from './lib/social';
 
 
-type ApiEvent = {
-  id: string;
-  platform: 'facebook' | 'instagram';
-  message: string;
-  imageSrc: string;
-  href: string;
-  venue?: string | null;
-  publishedTime?: string | null;
-};
+// type ApiEvent = {
+//   id: string;
+//   platform: 'facebook' | 'instagram';
+//   message: string;
+//   imageSrc: string;
+//   href: string;
+//   venue?: string | null;
+//   publishedTime?: string | null;
+// };
 
-//export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 async function getEvents(): Promise<EventCardProps[]> {
   const [fb, ig] = await Promise.all([fetchFacebookEvents(), fetchInstagramAsEvents(20)]);

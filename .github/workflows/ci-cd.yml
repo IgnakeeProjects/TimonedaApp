@@ -1,51 +1,24 @@
 name: CI/CD - Next.js to Azure Static Web Apps
-
 on:
-  push:
-    branches:
-      - dev
-      - main
-
+  push: { branches: [dev, main] }
 env:
   NODE_VERSION: '20.x'
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
-    # Mapea ramas a entornos de GitHub
-    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Next.js (static export)
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          USE_SOCIAL_MOCK: 'true'
-        run: npm run build
-        # ⚠️ Asegúrate de tener en next.config.js:
-        # module.exports = { output: 'export' }
-
-      - name: Verificar carpeta de salida
-        run: ls -la out
-
-      - name: Deploy to Azure Static Web Apps
+          cache: npm
+      - run: npm ci
+      # No generes 'out' ni llames npm run build tú mismo
+      - name: Deploy to Azure Static Web Apps (SSR)
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ github.ref == 'refs/heads/main' && secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD || secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DEV }}
           action: "upload"
-          app_location: "out"
-          skip_app_build: true
+          app_location: "/"      # raíz del proyecto
+          skip_app_build: false  # la acción hace el build SSR
 

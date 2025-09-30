@@ -102,7 +102,7 @@ export async function fetchInstagramAsEvents(limit = 12): Promise<NormalizedEven
   const res = await fetch(url, { next: { revalidate: 300 } });
   if (!res.ok) return [];
 
-  const json = await res.json();
+  //const json = await res.json();
   //const data: any[] = json.data ?? [];
 
   try {

@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { fetchFacebookEvents, fetchInstagramAsEvents } from '../../lib/social';
 
+// Hace la ruta exportable en build (SSG)
+export const dynamic = 'force-static';
+
 export async function GET() {
   try {
     const [fb, ig] = await Promise.all([fetchFacebookEvents(), fetchInstagramAsEvents(20)]); // máximo 20
