@@ -8,6 +8,26 @@ export type YTVideo = {
   thumbnail: string;
 };
 
+// Tipos para la respuesta de la API de YouTube
+type YouTubePlaylistItem = {
+  contentDetails?: {
+    videoId?: string;
+  };
+  snippet?: {
+    resourceId?: {
+      videoId?: string;
+    };
+    title?: string;
+    description?: string;
+    publishedAt?: string;
+    thumbnails?: {
+      high?: { url?: string };
+      medium?: { url?: string };
+      default?: { url?: string };
+    };
+  };
+};
+
 import { getUploadsPlaylistIdMock, getLiveVideoIdMock, getPlaylistVideosMock } from '../Mocks/youtube-mock';
 
 const useMock = process.env.YT_USE_MOCK === 'true';
@@ -65,7 +85,7 @@ export async function getPlaylistVideos(playlistId: string, pageToken?: string) 
   const data = await res.json();
 
   const items: YTVideo[] = (data.items || [])
-    .map((it: any) => {
+    .map((it: YouTubePlaylistItem) => {
       const vid = it.contentDetails?.videoId || it.snippet?.resourceId?.videoId;
       const sn = it.snippet || {};
       if (!vid) return null;
@@ -81,7 +101,7 @@ export async function getPlaylistVideos(playlistId: string, pageToken?: string) 
           `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
       } as YTVideo;
     })
-    .filter(Boolean) as YTVideo[];
+    .filter((item: YTVideo | null): item is YTVideo => item !== null)
 
   return {
     items,

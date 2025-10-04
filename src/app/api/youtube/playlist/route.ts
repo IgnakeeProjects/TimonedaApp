@@ -13,7 +13,8 @@ export async function GET(req: Request) {
   try {
     const data = await getPlaylistVideos(playlistId, pageToken);
     return NextResponse.json(data);
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message || 'Error' }, { status: 500 });
-  }
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Error desconocido';
+    return NextResponse.json({ error: message }, { status: 500 });
+}
 }
