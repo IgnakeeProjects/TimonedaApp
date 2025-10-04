@@ -28,6 +28,11 @@ type YouTubePlaylistItem = {
   };
 };
 
+type YouTubePlaylistResponse = {
+  items?: YouTubePlaylistItem[];
+  nextPageToken?: string;
+};
+
 import { getUploadsPlaylistIdMock, getLiveVideoIdMock, getPlaylistVideosMock } from '../Mocks/youtube-mock';
 
 const useMock = process.env.YT_USE_MOCK === 'true';
@@ -82,7 +87,7 @@ export async function getPlaylistVideos(playlistId: string, pageToken?: string) 
 
   const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error('No se pudieron cargar videos del playlist');
-  const data = await res.json();
+  const data:YouTubePlaylistResponse = await res.json();
 
   const items: YTVideo[] = (data.items || [])
     .map((it: YouTubePlaylistItem) => {
@@ -101,7 +106,7 @@ export async function getPlaylistVideos(playlistId: string, pageToken?: string) 
           `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
       } as YTVideo;
     })
-    .filter((item: YTVideo | null): item is YTVideo => item !== null)
+    .filter((item): item is YTVideo => item !== null)
 
   return {
     items,
