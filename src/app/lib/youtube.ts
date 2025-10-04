@@ -37,12 +37,15 @@ import { getUploadsPlaylistIdMock, getLiveVideoIdMock, getPlaylistVideosMock } f
 
 const useMock = process.env.YT_USE_MOCK === 'true';
 
-const key = process.env.YOUTUBE_API_KEY!;
-const channelId = process.env.YOUTUBE_CHANNEL_ID!;
+const key = process.env.YOUTUBE_API_KEY || '';
+const channelId = process.env.YOUTUBE_CHANNEL_ID || '';
 const uploadsEnv = process.env.YOUTUBE_UPLOADS_PLAYLIST_ID || null;
 
-if (!key) throw new Error('Falta YOUTUBE_API_KEY en .env.local');
-if (!channelId) throw new Error('Falta YOUTUBE_CHANNEL_ID en .env.local');
+// Validación solo en runtime, no en build
+if (!useMock && typeof window === 'undefined') {
+  if (!key) console.warn('⚠️ Falta YOUTUBE_API_KEY en variables de entorno');
+  if (!channelId) console.warn('⚠️ Falta YOUTUBE_CHANNEL_ID en variables de entorno');
+}
 
 export async function getUploadsPlaylistId(): Promise<string> {
   if (useMock) {
