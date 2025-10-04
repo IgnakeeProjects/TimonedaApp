@@ -3,8 +3,8 @@
 :root {
   --color-primary: #003366;    /* Azul Marino - principal */
   --color-secondary: #FFCC00;  /* Dorado - acentos */
-  --color-surface: #FFFFFF;    /* Blanco */
-  --color-background: #F0F0F0; /* Gris claro */
+  --color-surface: #ffffff;    /* Blanco */
+  --color-background: #fbfbfc; /* Gris claro */
   --color-text-dark: #003366;
   --color-text-light: #FFFFFF;
 }
@@ -62,7 +62,15 @@
 
   /* Secciones (para cuando agregues contenido) */
   /* ===== Eventos ===== */
-  .events-section { @apply py-10 bg-white; }
+  .events-section { 
+  background-color: var(--color-background); 
+  @apply py-16 relative; 
+}
+.events-section::after {
+  content: '';
+  @apply absolute bottom-0 left-0 right-0 h-px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,.06) 20%, rgba(0,0,0,.06) 80%, transparent);
+}
   .events-header { @apply flex items-baseline justify-between mb-6; }
   .events-title { @apply text-3xl font-bold text-gray-900; }
   .events-view-all { @apply text-base text-blue-900 underline underline-offset-4 hover:opacity-80; }
@@ -133,7 +141,21 @@
   .events-arrow:disabled { @apply opacity-40 cursor-not-allowed; }
   
   
-  .sermons-section { background-color: var(--color-surface); @apply py-12; }
+  .sermons-section { 
+  background-color: var(--color-background); 
+  @apply py-16 relative; 
+  }
+  .sermons-section::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,.06) 20%, rgba(0,0,0,.06) 80%, transparent);
+  }
+
+  /* Última sección sin separador */
+.events-section:last-of-type::after,
+.sermons-section:last-of-type::after { 
+  display: none; 
+}
 
   .main-header .container { @apply flex items-center justify-between h-16 gap-4; }
 
@@ -204,6 +226,19 @@
   /* (Opcional) si aún existe el chip de plataforma en la izquierda, ocúltalo
      o elimínalo del JSX donde se renderice. */
   /* .platform-chip-left { display: none; } */
+
+ 
+/* Scrollbar fino y con padding para que no corte la última tarjeta */
+.yt-scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable both-edges;
+}
+.yt-scrollbar-thin::-webkit-scrollbar { width: 8px; }
+.yt-scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,.2);
+  border-radius: 9999px;
+}
+
 }
 
 @layer utilities {
