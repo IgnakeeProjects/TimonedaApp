@@ -151,88 +151,90 @@ export default function Footer({
 
       {/* Sección inferior (utilidades, RRSS y legal) */}
       <section className="footer-bottom">
-        <div className="footer-bottom-inner">
-          <nav className="footer-links" aria-label="Enlaces utilitarios">
-            {bottomLinks.map((l) =>
-              l.external ? (
+        <div className="container">
+          <div className="footer-bottom-inner">
+            <nav className="footer-links" aria-label="Enlaces utilitarios">
+              {bottomLinks.map((l) =>
+                l.external ? (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-link-utility"
+                  >
+                    {l.label}
+                  </a>
+                ) : (
+                  <Link key={l.label} href={l.href} className="footer-link-utility">
+                    {l.label}
+                  </Link>
+                )
+              )}
+            </nav>
+
+            <div className="footer-social" aria-label="Redes sociales">
+              {social.map((s) => (
                 <a
-                  key={l.label}
-                  href={l.href}
+                  key={s.label}
+                  href={s.href}
+                  aria-label={s.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-link-utility"
+                  className="footer-social-btn"
                 >
-                  {l.label}
+                  <Image src={s.icon} alt={s.label} width={20} height={20} />
                 </a>
-              ) : (
-                <Link key={l.label} href={l.href} className="footer-link-utility">
-                  {l.label}
+              ))}
+            </div>
+
+            <div className="footer-copy">
+              <p>
+                <Link href="/accesibilidad" className="underline-offset-2 hover:underline">
+                  Accesibilidad para personas con discapacidad
                 </Link>
-              )
-            )}
-          </nav>
-
-          <div className="footer-social" aria-label="Redes sociales">
-            {social.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                aria-label={s.label}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-btn"
-              >
-                <Image src={s.icon} alt={s.label} width={20} height={20} />
-              </a>
-            ))}
-          </div>
-
-          <div className="footer-copy">
-            <p>
-              <Link href="/accesibilidad" className="underline-offset-2 hover:underline">
-                Accesibilidad para personas con discapacidad
-              </Link>
-            </p>
-            <p className="flex flex-wrap justify-center gap-x-3 gap-y-1">
-              <Link href="/condiciones" className="link-muted">Condiciones de uso</Link>
-              <span aria-hidden="true">•</span>
-              <Link href="/privacidad" className="link-muted">Aviso de privacidad</Link>
-              <span aria-hidden="true">•</span>
-              <Link href="/cookies" className="link-muted">Preferencias sobre cookies</Link>
-            </p>
-            <p>© {year} {orgName}. Todos los derechos reservados.</p>
-            {/* Crédito del desarrollador */}
-            <div className="footer-dev">
-              {developerUrl ? (
-                <a href={developerUrl} target="_blank" rel="noopener noreferrer" className="footer-dev-link">
-                  {developerLogoSrc && (
-                    <Image
-                      src={developerLogoSrc}
-                      alt={`${developerName} logo`}
-                      width={20}
-                      height={20}
-                      className="footer-dev-logo"
-                    />
-                  )}
-                  <span>Desarrollado por {developerName}</span>
-                </a>
-              ) : (
-                <span className="footer-dev-link">
-                  {developerLogoSrc && (
-                    <Image
-                      src={developerLogoSrc}
-                      alt={`${developerName} logo`}
-                      width={20}
-                      height={20}
-                      className="footer-dev-logo"
-                    />
-                  )}
-                  <span>Desarrollado por {developerName}</span>
-                </span>
-              )}
+              </p>
+              <p className="flex flex-wrap justify-center gap-x-3 gap-y-1">
+                <Link href="/condiciones" className="link-muted">Condiciones de uso</Link>
+                <span aria-hidden="true">•</span>
+                <Link href="/privacidad" className="link-muted">Aviso de privacidad</Link>
+                <span aria-hidden="true">•</span>
+                <Link href="/cookies" className="link-muted">Preferencias sobre cookies</Link>
+              </p>
+              <p>© {year} {orgName}. Todos los derechos reservados.</p>
+              {/* Crédito del desarrollador */}
+              <div className="footer-dev">
+                {developerUrl ? (
+                  <a href={developerUrl} target="_blank" rel="noopener noreferrer" className="footer-dev-link">
+                    {developerLogoSrc && (
+                      <Image
+                        src={developerLogoSrc}
+                        alt={`${developerName} logo`}
+                        width={20}
+                        height={20}
+                        className="footer-dev-logo"
+                      />
+                    )}
+                    <span>Desarrollado por {developerName}</span>
+                  </a>
+                ) : (
+                  <span className="footer-dev-link">
+                    {developerLogoSrc && (
+                      <Image
+                        src={developerLogoSrc}
+                        alt={`${developerName} logo`}
+                        width={20}
+                        height={20}
+                        className="footer-dev-logo"
+                      />
+                    )}
+                    <span>Desarrollado por {developerName}</span>
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </div>        
       </section>
     </footer>
   );

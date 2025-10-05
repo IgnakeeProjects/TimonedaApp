@@ -54,33 +54,31 @@ export default async function Home() {
       <HeroSlider />
 
       <section className="container mx-auto px-4 py-8 sermons-section">
-        <div className="">
-          <header className="mb-6">
-            <h1 className="events-title">En vivo y galería</h1>
+        <header className="mb-6">
+            <h1 className="events-title">En Vivo y Galería</h1>
             <p className="text-gray-600">Sigue el directo o explora nuestros mensajes anteriores.</p>
-          </header>
-          <YouTubePageClient
-            initialSelectedId={initialSelectedId}
-            playlistId={playlistId}
-            initialItems={items}
-            initialNextPageToken={playlist.nextPageToken || null}
-            liveActive={Boolean(liveId)}
-          />
+        </header>
+        <YouTubePageClient
+          initialSelectedId={initialSelectedId}
+          playlistId={playlistId}
+          initialItems={items}
+          initialNextPageToken={playlist.nextPageToken || null}
+          liveActive={Boolean(liveId)}
+        />
+        <div>
+          
         </div>
-        
       </section>
       
-      <section className="container events-section">
-        <div className="">          
-          <div className="events-header">
+      <section className="container mx-auto px-4 py-8 events-section">
+        <div className="events-header">
             <div>
               <h2 className="events-title">Publicaciones Recientes</h2>
               <p className="text-gray-600 text-left">Siguenos en nuestras redes sociales.</p>
             </div>            
             <a className="events-view-all" href="#">Ver todo</a>
-          </div>
-          <EventSlider events={events} />
         </div>
+          <EventSlider events={events} />
       </section>
     </>
   );
