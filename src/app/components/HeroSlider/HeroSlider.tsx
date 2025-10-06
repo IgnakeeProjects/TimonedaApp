@@ -57,41 +57,56 @@ export default function HeroSlider() {
   };
 
   return (
-    <section className="hero-slider">
-      <div className="slider-container">
-        {slides.map((s, i) => (
-          <div key={s.id} className={`slide ${i === current ? 'active' : ''}`}>
-            <Image src={s.image} alt={`Slide ${i + 1}`} fill className="slide-image" priority={i === 0} />
-            <div className="slide-overlay">
-              <div className="slide-content">
-                <h1 className="hero-title">
-                  {s.title.split('\n').map((line, k) => (
-                    <span key={k}>
-                      {line}
-                      {k < s.title.split('\n').length - 1 && <br />}
-                    </span>
-                  ))}
-                </h1>
-                <p className="hero-subtitle">{s.subtitle}</p>
-                <a className="btn btn-primary" href={s.buttonLink}>{s.buttonText}</a>
+    <div className="hero-slider-wrapper">
+      <section className="hero-slider">
+        <div className="slider-container">
+          {slides.map((s, i) => (
+            <div key={s.id} className={`slide ${i === current ? 'active' : ''}`}>
+              <Image src={s.image} alt={`Slide ${i + 1}`} fill className="slide-image" priority={i === 0} />
+              <div className="slide-overlay">
+                <div className="slide-content">
+                  <h1 className="hero-title">
+                    {s.title.split('\n').map((line, k) => (
+                      <span key={k}>
+                        {line}
+                        {k < s.title.split('\n').length - 1 && <br />}
+                      </span>
+                    ))}
+                  </h1>
+                  <p className="hero-subtitle">{s.subtitle}</p>
+                  <a className="btn btn-primary" href={s.buttonLink}>{s.buttonText}</a>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <button className="slider-control prev" onClick={() => go((current - 1 + slides.length) % slides.length)} aria-label="Anterior">
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
-      </button>
-      <button className="slider-control next" onClick={() => go((current + 1) % slides.length)} aria-label="Siguiente">
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
-      </button>
+        <button className="slider-control prev" onClick={() => go((current - 1 + slides.length) % slides.length)} aria-label="Anterior">
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button className="slider-control next" onClick={() => go((current + 1) % slides.length)} aria-label="Siguiente">
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
 
-      <div className="slider-indicators">
-        {slides.map((_, i) => (
-          <button key={i} className={`indicator ${i === current ? 'active' : ''}`} onClick={() => go(i)} aria-label={`Ir al slide ${i + 1}`} />
-        ))}
-      </div>
-    </section>
+        <div className="slider-indicators">
+          {slides.map((_, i) => (
+            <button key={i} className={`indicator ${i === current ? 'active' : ''}`} onClick={() => go(i)} aria-label={`Ir al slide ${i + 1}`} />
+          ))}
+        </div>
+      </section>
+      {/* Columna derecha con degradado y logo */}
+      <aside className="hero-sidebar">
+        <div className="hero-sidebar-logo">
+          <Image
+            src="../adventist-symbol--white.svg"
+            alt="Logo Iglesia"
+            width={80}
+            height={80}
+            className="object-contain"
+          />
+        </div>
+      </aside>
+    </div>
+    
   );
 }
